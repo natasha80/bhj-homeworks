@@ -17,6 +17,16 @@ class Game {
   }
 
   registerEvents() {
+    window.addEventListener('keydown', e => {
+      if (
+        e.key.toLocaleUpperCase() ==
+        this.currentSymbol.textContent.toLocaleUpperCase()
+      ) {
+        this.success();
+      } else {
+        this.fail();
+      }
+    });
     /*
       TODO:
       Написать обработчик события, который откликается
