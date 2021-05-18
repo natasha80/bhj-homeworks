@@ -1,45 +1,38 @@
 "use strict";
 
-const products = document.querySelectorAll(".product");
-const productQuantity = document.querySelectorAll(".product__quantity-value");
-const cartProducts = document.querySelector(".cart__products");
+const caseArea = document.getElementById("task__input");
+const caseList = document.getElementById("tasks__list");
+const button = document.getElementById("tasks__add");
 
-function addProductCart(id, item, image) {
-  return `<div class="cart__product" data-id="${id}">
-            <img class="cart__product-image" src="${image}">
-            <div class="cart__product-count">${item}</div>
-        </div>`;
-}
+const writeCase = function() {
+  let textCase = caseArea.value;
+  return `<div class="task">
+    <div class="task__title">
+      ${textCase}
+    </div>
+    <a href="#" class="task__remove">&times;</a>
+  </div>`;
+};
 
-for (let i = 0; i < products.length; i++) {
-  products[i].addEventListener("click", e => {
-    let targetItem = e.target;
+caseArea.addEventListener("keydown", e => {
+  if (e.keyCode === 13 && caseArea.value !== "") {
     e.preventDefault();
-    if (targetItem.classList.contains("product__quantity-control_dec") && productQuantity.item(i).textContent > 1) {
-      productQuantity.item(i).textContent--;
-    }
-    if (targetItem.classList.contains("product__quantity-control_inc")) {
-      productQuantity.item(i).textContent++;
-    }
+    caseList.innerHTML += writeCase();
+    caseArea.value = "";
+  }
+});
 
-    if (targetItem.classList.contains("product__add")) {
-      let target_image = targetItem
-        .closest(".product")
-        .querySelector(".product__image")
-        .getAttribute("src");
-      let target_id = targetItem.closest(".product").dataset.id;
-      let target_value = targetItem
-        .closest(".product")
-        .querySelector(".product__quantity-value").textContent;
+caseList.addEventListener("click", e => {
+  let target = e.target;
+  if (target.classList.contains("task__remove")) {
+    target.closest(".task").remove();
+  }
+});
 
-      if (cartProducts.children.length !== 0 && cartProducts.querySelector(`[data-id="${target_id}"]`)) {
-        cartProducts
-          .querySelector(`[data-id="${target_id}"]`)
-          .querySelector(".cart__product-count").textContent =
-          Number(cartProducts.querySelector(`[data-id="${target_id}"]`).querySelector(".cart__product-count").textContent) + Number(target_value);
-      } else {
-        cartProducts.innerHTML += addProductCart(target_id, Number(target_value), target_image);
-      }
-    }
-  });
-}
+button.addEventListener("click", e => {
+  e.preventDefault();
+  if (caseArea.value !== "") {
+    caseList.innerHTML += writeCase();
+    caseArea.value = "";
+  }
+});
