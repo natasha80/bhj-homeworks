@@ -14,9 +14,7 @@ const getCookie = name => {
 };
 
 window.addEventListener("load", function() {
-  if (getCookie("modalOpen")) {
-    return false;
-  } else {
+  if (!getCookie("modalOpen")) {
     subscribeModal.classList.add("modal_active");
   }
 });
@@ -24,9 +22,7 @@ window.addEventListener("load", function() {
 modalClose.addEventListener("click", function(e) {
   e.target.closest(".modal").classList.remove("modal_active");
 
-  if (getCookie("modalOpen")) {
-    return false;
-  } else {
+  if (!getCookie("modalOpen")) {
     let date = new Date();
 
     date.setDate(date.getDate() + 1);
