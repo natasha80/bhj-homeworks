@@ -7,7 +7,15 @@ signin.classList.add("signin_active");
 
 let xhr = new XMLHttpRequest();
 
-signinBtn.addEventListener("click", function() {
+window.onload = function() {
+  if (localStorage.userId !== undefined) {/span>
+    signin.classList.remove("signin_active");
+    welcome.classList.add("welcome_active");
+    welcome.innerHTML = `Добро пожаловать, пользователь #<span>${localStorage.userId}</span>`;
+  }
+}
+
+signinBtn.addEventListener("click", function(event) {
   event.preventDefault();
   const formData = new FormData(signinForm);
 
@@ -15,7 +23,7 @@ signinBtn.addEventListener("click", function() {
   xhr.send(formData);
 
   xhr.onreadystatechange = function() {
-    if (this.readyState == xhr.DONE && this.status == 200) {
+    if (this.readyState === xhr.DONE && this.status === 200) {
       const json = JSON.parse(xhr.responseText);
 
       if (json.success) {
